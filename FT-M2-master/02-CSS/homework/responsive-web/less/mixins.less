@@ -1,1 +1,26 @@
 // Mixins acá
+.flex (@direction, @justify, @align){
+    display: flex;
+    flex-direction: @direction;
+    justify-content: @justify;
+    align-items: @align; 
+}
+
+.headImg (@w: 100%, @mTop, @borRad) {
+    width: @w;
+      margin-top: @mTop;
+      border-radius: @borRad;
+}
+
+.regis (@color, @bc, @bRadius) {
+    color: @color;
+    background-color: @bc;
+    border-radius: @bRadius;
+
+    &:hover {
+        color: black;
+    background-color: white;
+    border-radius: @bRadius;
+    border: 1px solid black;
+}
+}
