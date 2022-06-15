@@ -9,7 +9,13 @@ var traverseDomAndCollectElements = function(matchFunc, startEl) {
   // usa matchFunc para identificar elementos que matchien
 
   // TU CÓDIGO AQUÍ
-  
+  if(matchFunc(startEl)) resultSet.push(startEl);
+
+  for(var el of startEl.children) {
+    resultSet = resultSet.concat(traverseDomAndCollectElements(matchFunc, el))
+  }
+
+  return resultSet;
 };
 
 // Detecta y devuelve el tipo de selector
@@ -18,7 +24,10 @@ var traverseDomAndCollectElements = function(matchFunc, startEl) {
 
 var selectorTypeMatcher = function(selector) {
   // tu código aquí
-  
+  if (selector[0] === '#') return 'id';
+  if (selector[0] === '.') return 'class';
+  if (selector.includes('.')) return 'tag.class';
+  return 'tag';
 };
 
 // NOTA SOBRE LA FUNCIÓN MATCH
@@ -30,13 +39,19 @@ var matchFunctionMaker = function(selector) {
   var selectorType = selectorTypeMatcher(selector);
   var matchFunction;
   if (selectorType === "id") { 
-   
+   matchFunction = (el) => `#${el.id}` === selector;
   } else if (selectorType === "class") {
-    
+    matchFunction = (el) => el.classList.contains(selector.substring(1));
   } else if (selectorType === "tag.class") {
-    
+    matchFunction = (el) => 
+    {
+      const [tag, className] = selector.split('.');
+      if (tag.toUpperCase() === el.tagName && el.classList.contains(className)) {
+        return true;
+      } else {return false;}
+  }
   } else if (selectorType === "tag") {
-    
+    matchFunction = (el) => el.tagName === selector.toUpperCase();
   }
   return matchFunction;
 };
